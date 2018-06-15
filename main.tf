@@ -9,14 +9,13 @@ resource "aws_instance" "terraform_instance" {
   tags {
     Name = "Hello"
   }
-user_data = <<HEREDOC
-#!/bin/bash
-yum update -y
-yum install -y httpd
-service httpd start
-chkconfig httpd on
-echo "HEllo html" >> /var/www/html/index.html
-HEREDOC
+user_data = <<-EOF
+              #!/bin/bash
+              yum install httpd -y
+              chkconfig httpd on
+              echo "Hello, World" >> /var/www/html/index.html
+              service httpd restart
+              EOF
 }
 
 resource "aws_security_group" "allow_all" {
